@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>考研错题本</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <style>
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 30%, #eef2ff 100%);
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #loading-screen.dark {
+        background: linear-gradient(135deg, #0a0a0a 0%, #171717 50%, #0a0a0a 100%);
+      }
+      .loader-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        animation: fadeInUp 0.7s ease-out;
+      }
+      .logo-wrapper {
+        position: relative;
+        width: 72px;
+        height: 72px;
+      }
+      .logo-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+      .logo-ring {
+        position: absolute;
+        inset: -4px;
+        border-radius: 22px;
+        border: 2px solid rgba(59, 130, 246, 0.4);
+        animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+      .logo-svg {
+        width: 36px;
+        height: 36px;
+        color: white;
+        animation: spin-slow 3s linear infinite;
+      }
+      .app-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: #334155;
+        letter-spacing: 0.5px;
+      }
+      .dark .app-title {
+        color: #d1d5db;
+      }
+      .dots {
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #3b82f6;
+        animation: bounce 1.4s ease-in-out infinite;
+      }
+      .dot:nth-child(2) {
+        background: #60a5fa;
+        animation-delay: 0.16s;
+      }
+      .dot:nth-child(3) {
+        background: #818cf8;
+        animation-delay: 0.32s;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes ping {
+        75%, 100% {
+          transform: scale(1.1);
+          opacity: 0;
+        }
+      }
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3); }
+        50% { box-shadow: 0 10px 50px rgba(59, 130, 246, 0.5); }
+      }
+      @keyframes bounce {
+        0%, 80%, 100% {
+          transform: scale(0);
+        }
+        40% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loader-container">
+        <div class="logo-wrapper">
+          <div class="logo-icon">
+            <svg class="logo-svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div class="logo-ring"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+          <div class="app-title">言念错题本</div>
+          <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.getElementById('loading-screen').classList.add('dark');
+      }
+    </script>
+  </body>
+</html>
