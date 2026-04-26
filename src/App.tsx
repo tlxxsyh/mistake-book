@@ -62,6 +62,7 @@ function App() {
   const [savingSettings, setSavingSettings] = useState(false)
   const [homeBgImage, setHomeBgImage] = useState<string | null>(null)
   const [sidebarWidth, setSidebarWidth] = useState(68)
+  const [isInitialized, setIsInitialized] = useState(false)
   
   const [selectedSubject, setSelectedSubject] = useState<string>('全部')
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
@@ -110,8 +111,13 @@ function App() {
   }, [])
 
   useEffect(() => {
-    loadMistakes()
-    loadMetadata()
+    let mounted = true
+    const init = async () => {
+      await Promise.all([loadMistakes(), loadMetadata()])
+      if (mounted) setIsInitialized(true)
+    }
+    init()
+    return () => { mounted = false }
   }, [loadMistakes, loadMetadata])
 
   const loadImage = useCallback(async (imagePath: string): Promise<string> => {
@@ -123,13 +129,6 @@ function App() {
       return data
     } catch { return '' }
   }, [imageCache])
-
-  useEffect(() => {
-    mistakes.forEach(m => {
-      m.question_images.forEach(img => { if (img && !imageCache[img]) loadImage(img) })
-      m.answer_images.forEach(img => { if (img && !imageCache[img]) loadImage(img) })
-    })
-  }, [mistakes, imageCache, loadImage])
 
   const openEditForm = (mistake: Mistake) => {
     setEditingMistakeId(mistake.id)
@@ -343,16 +342,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    const el = document.getElementById('loading-screen')
-    if (el) {
-      el.style.opacity = '0'
-      el.style.visibility = 'hidden'
-      setTimeout(() => el.remove(), 500)
-    }
-  }, [])
-
   const renderPage = () => {
+    if (!isInitialized) {
+      return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+            <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>正在加载数据...</p>
+          </div>
+        </div>
+      )
+    }
+
     if (currentPage === 'dashboard') {
       return (
         <div className="min-h-screen">

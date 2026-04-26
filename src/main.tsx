@@ -8,3 +8,12 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+
+requestAnimationFrame(() => {
+  const loading = document.getElementById('loading-screen')
+  if (loading) {
+    loading.style.opacity = '0'
+    loading.style.visibility = 'hidden'
+    setTimeout(() => loading.remove(), 300)
+  }
+})
