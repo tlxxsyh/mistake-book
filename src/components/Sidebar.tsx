@@ -108,12 +108,20 @@ export default function Sidebar({ currentPage, onPageChange, hasHomeBg, onWidthC
 
   const w = collapsed ? 68 : 180
 
-  const activeBg = hasHomeBg ? 'bg-white/20 text-white' : (isDark ? 'bg-blue-900/40 text-blue-400' : 'bg-blue-50 text-blue-600')
-  const inactiveHover = hasHomeBg ? 'text-white/70 hover:text-white hover:bg-white/10' : (isDark ? 'text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800/60' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50')
+  const activeBg = hasHomeBg
+    ? 'bg-white/20 text-white'
+    : (isDark
+      ? 'bg-[#2a2a2c] shadow-[inset_3px_3px_6px_rgba(0,0,0,0.5),inset_-3px_-3px_6px_rgba(50,50,55,0.3)] text-blue-400'
+      : 'bg-[#e8eef4] shadow-[inset_3px_3px_6px_rgba(163,177,198,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] text-blue-600')
+  const inactiveHover = hasHomeBg
+    ? 'text-white/70 hover:text-white hover:bg-white/10'
+    : (isDark
+      ? 'text-slate-500 hover:text-slate-300 hover:bg-[#2a2a2c] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.4),inset_-2px_-2px_4px_rgba(50,50,55,0.25)]'
+      : 'text-slate-400 hover:text-slate-600 hover:bg-[#e8eef4] hover:shadow-[inset_2px_2px_4px_rgba(163,177,198,0.3),inset_-2px_-2px_4px_rgba(255,255,255,0.9)]')
 
   return (
     <aside
-      className={`fixed left-0 top-0 bottom-0 border-r shadow-sm flex flex-col py-5 z-50 ${hasHomeBg ? 'bg-white/10 backdrop-blur-xl border-white/10' : (isDark ? 'bg-neutral-900/80 backdrop-blur-xl border-neutral-800/60' : 'bg-white/90 backdrop-blur-md border-slate-200/60')}`}
+      className={`fixed left-0 top-0 bottom-0 ${hasHomeBg ? '' : 'border-r'} shadow-sm flex flex-col py-5 z-50 ${hasHomeBg ? 'bg-white/10 backdrop-blur-xl border-r border-white/10' : (isDark ? 'bg-[#1c1c1e] shadow-[4px_0px_12px_rgba(0,0,0,0.4)] border-r border-white/5' : 'bg-[#f0f4f8] shadow-[4px_0px_12px_rgba(163,177,198,0.3)]')}`}
       style={{ width: w, transition: 'width 280ms cubic-bezier(0.4, 0, 0.2, 1)' }}
     >
       <div className="px-2 mb-6 overflow-hidden">
@@ -125,7 +133,7 @@ export default function Sidebar({ currentPage, onPageChange, hasHomeBg, onWidthC
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
           </div>
-          <span className={`text-sm font-bold whitespace-nowrap overflow-hidden transition-opacity duration-200 ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'} ${hasHomeBg ? 'text-white' : (isDark ? 'text-neutral-200' : 'text-slate-800')}`} style={{ transitionDelay: collapsed ? '0ms' : '80ms' }}>
+          <span className={`text-sm font-bold whitespace-nowrap overflow-hidden transition-opacity duration-200 ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'} ${hasHomeBg ? 'text-white' : (isDark ? 'text-slate-200' : 'text-slate-800')}`} style={{ transitionDelay: collapsed ? '0ms' : '80ms' }}>
             言念错题本
           </span>
         </div>
@@ -142,7 +150,7 @@ export default function Sidebar({ currentPage, onPageChange, hasHomeBg, onWidthC
               title={collapsed ? item.title : undefined}
             >
               {isActive && !collapsed && (
-                <span className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full ${hasHomeBg ? 'bg-white/80' : 'bg-blue-500'}`} />
+                <span className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full ${hasHomeBg ? 'bg-white/80' : (isDark ? 'bg-blue-400' : 'bg-blue-500')}`} />
               )}
               {isActive && collapsed && (
                 <span className={`absolute inset-0 rounded-lg ring-1.5 ${hasHomeBg ? 'ring-white/30' : (isDark ? 'ring-blue-500/40' : 'ring-blue-400/50')}`} />
@@ -157,7 +165,7 @@ export default function Sidebar({ currentPage, onPageChange, hasHomeBg, onWidthC
       </nav>
 
       <div className="mt-auto flex flex-col gap-1.5 w-full px-2 pb-2 overflow-hidden">
-        <button onClick={toggleTheme} className={`w-full rounded-lg flex items-center transition-all duration-150 gap-2.5 ${collapsed ? 'justify-center' : 'justify-start px-3'} h-10 ${hasHomeBg ? 'text-white/70 hover:text-yellow-300 hover:bg-white/10' : (isDark ? 'text-yellow-400 hover:text-yellow-300 hover:bg-neutral-800/60' : 'text-slate-400 hover:text-amber-600 hover:bg-slate-50')}`} title={isDark ? '切换到亮色模式' : '切换到暗黑模式'}>
+        <button onClick={toggleTheme} className={`w-full rounded-lg flex items-center transition-all duration-150 gap-2.5 ${collapsed ? 'justify-center' : 'justify-start px-3'} h-10 ${hasHomeBg ? 'text-white/70 hover:text-yellow-300 hover:bg-white/10' : (isDark ? 'text-slate-500 hover:text-yellow-400 hover:bg-[#2a2a2c] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.4),inset_-2px_-2px_4px_rgba(50,50,55,0.25)]' : 'text-slate-400 hover:text-amber-600 hover:bg-[#e8eef4] hover:shadow-[inset_2px_2px_4px_rgba(163,177,198,0.3),inset_-2px_-2px_4px_rgba(255,255,255,0.9)]')}`} title={isDark ? '切换到亮色模式' : '切换到暗黑模式'}>
           {isDark ? (
             <svg className={`${iconSize} shrink-0`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
           ) : (
@@ -165,7 +173,7 @@ export default function Sidebar({ currentPage, onPageChange, hasHomeBg, onWidthC
           )}
           <span className={`text-sm font-medium whitespace-nowrap overflow-hidden transition-opacity duration-200 ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`} style={{ transitionDelay: collapsed ? '0ms' : '80ms' }}>{isDark ? '亮色模式' : '暗黑模式'}</span>
         </button>
-        <button onClick={toggle} className={`w-full rounded-lg flex items-center transition-all duration-150 gap-2.5 ${collapsed ? 'justify-center' : 'justify-start px-3'} h-10 ${hasHomeBg ? 'text-white/50 hover:text-white hover:bg-white/10' : (isDark ? 'text-neutral-500 hover:text-neutral-300 hover:bg-neutral-800/60' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50')}`} title="展开/折叠菜单">
+        <button onClick={toggle} className={`w-full rounded-lg flex items-center transition-all duration-150 gap-2.5 ${collapsed ? 'justify-center' : 'justify-start px-3'} h-10 ${hasHomeBg ? 'text-white/50 hover:text-white hover:bg-white/10' : (isDark ? 'text-slate-500 hover:text-slate-300 hover:bg-[#2a2a2c] hover:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.4),inset_-2px_-2px_4px_rgba(50,50,55,0.25)]' : 'text-slate-400 hover:text-slate-600 hover:bg-[#e8eef4] hover:shadow-[inset_2px_2px_4px_rgba(163,177,198,0.3),inset_-2px_-2px_4px_rgba(255,255,255,0.9)]')}`} title="展开/折叠菜单">
           <svg className={`${iconSize} shrink-0 transition-transform duration-300 ${collapsed ? '' : 'rotate-180'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
           <span className={`text-sm font-medium whitespace-nowrap overflow-hidden transition-opacity duration-200 ${collapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'}`} style={{ transitionDelay: collapsed ? '0ms' : '80ms' }}>折叠</span>
         </button>

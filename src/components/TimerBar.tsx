@@ -17,9 +17,11 @@ export default function TimerBar() {
 
   const isCountdown = totalSeconds !== null && totalSeconds > 0
   const displayTime = isCountdown ? Math.max(totalSeconds! - elapsedSeconds, 0) : elapsedSeconds
+  const hasHomeBg = document.querySelector('[style*="background-image"]') !== null
+  const isDarkMode = isDark && !hasHomeBg
 
   return (
-    <div className={`fixed top-0 left-[68px] right-0 z-[100] flex items-center justify-between px-5 py-2.5 border-b backdrop-blur-xl shadow-sm ${isDark ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-slate-200/80'} animate-in slide-in-from-top fade-in duration-300`}>
+    <div className={`fixed top-0 left-[68px] right-0 z-[100] flex items-center justify-between px-5 py-2.5 border-b shadow-sm animate-in slide-in-from-top fade-in duration-300 ${hasHomeBg ? 'bg-white/[0.06] backdrop-blur-sm' : (isDarkMode ? 'bg-[#1c1c1e]/95 backdrop-blur-sm shadow-[0px_4px_12px_rgba(0,0,0,0.4)]' : 'bg-[#f0f4f8]/95 backdrop-blur-sm shadow-[0px_4px_12px_rgba(163,177,198,0.25)]')}`}>
       <div className="flex items-center gap-3 min-w-0">
         <div className={`w-2 h-2 rounded-full ${paused ? 'bg-amber-500' : 'bg-emerald-500'} ${paused ? '' : 'animate-pulse'}`} />
         <div className="min-w-0">
