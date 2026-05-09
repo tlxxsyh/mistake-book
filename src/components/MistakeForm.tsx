@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState, useRef } from 'react'
 import { ImageCarousel, ImageViewer } from './ImageCarousel'
 import { useTheme } from './ThemeProvider'
 
@@ -39,6 +39,7 @@ export default function MistakeForm({
   const [pasteTarget, setPasteTarget] = useState<PasteTarget>(null)
   const [viewerImages, setViewerImages] = useState<string[] | null>(null)
   const [viewerIndex, setViewerIndex] = useState(0)
+  const mouseDownOnBackdropRef = useRef(false)
 
   const handlePaste = useCallback((e: ClipboardEvent) => {
     if (!show || !pasteTarget) return
@@ -89,8 +90,12 @@ export default function MistakeForm({
   if (!show) return null
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4" onClick={() => onClose()}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200" />
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+        onMouseDown={(e) => { mouseDownOnBackdropRef.current = e.target === e.currentTarget }}
+        onClick={() => { if (mouseDownOnBackdropRef.current) onClose() }}
+      />
       <div onClick={e => e.stopPropagation()} className={`relative w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 fade-in slide-in-from-bottom-4 duration-300 ${isDark ? 'bg-neutral-900 shadow-black/40 border border-neutral-800' : 'bg-white shadow-slate-300/50 border border-slate-200/60'}`}>
         <div className={`px-6 py-4 border-b flex items-center justify-between shrink-0 ${isDark ? 'border-neutral-800 bg-neutral-900' : 'border-slate-200/60 bg-gradient-to-r from-blue-50 to-indigo-50'}`}>
           <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-800'}`}>{editingId ? '编辑错题' : '添加新错题'}</span>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import katex from 'katex'
 import type { Mistake } from '../App'
 import { ImageCarousel, ImageViewer } from './ImageCarousel'
@@ -108,6 +108,7 @@ export function DetailModal({ mistake, imageCache, onClose, onEdit, onDelete, on
   const [viewerImages, setViewerImages] = useState<string[] | null>(null)
   const [viewerIndex, setViewerIndex] = useState(0)
   const [reviewing, setReviewing] = useState(false)
+  const mouseDownOnBackdropRef = useRef(false)
 
   if (!mistake) return null
 
@@ -125,7 +126,10 @@ export function DetailModal({ mistake, imageCache, onClose, onEdit, onDelete, on
   return (
     <>
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200"
+        onMouseDown={(e) => { mouseDownOnBackdropRef.current = e.target === e.currentTarget }}
+        onClick={() => { if (mouseDownOnBackdropRef.current) onClose() }}
+      />
 
       <div className={`relative rounded-2xl shadow-2xl w-full max-w-5xl max-h-[85vh] overflow-hidden animate-in zoom-in-95 fade-in slide-in-from-bottom-4 duration-300 flex flex-col ${isDark ? 'bg-neutral-900' : 'bg-white'}`}>
         <header className={`flex items-center justify-between px-6 py-4 border-b shrink-0 ${isDark ? 'border-neutral-800 bg-neutral-900' : 'border-slate-100 bg-gradient-to-r from-slate-50 to-white'}`}>
